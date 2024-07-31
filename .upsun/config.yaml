@@ -9,7 +9,7 @@ applications:
         source:
             root: "frontend"
 
-        type: "nodejs:18"
+        type: "nodejs:20"
 
         variables:
             env:
@@ -54,6 +54,15 @@ applications:
             build: |
                 set -eux
                 pip install -r requirements.txt --disable-pip-version-check
+
+        relationships:
+            redis_session: 
+                service: "redis_service"
+                endpoint: "redis"
+
+            postgres:
+                service: "postgres"
+                endpoint: "postgresql"
                 
         web:
             commands:
@@ -73,9 +82,11 @@ applications:
 #                 service: "redis_service"
 #                 endpoint: "redis"
 
-# services:
-#     redis_service:
-#         type: "redis:7.0"
+services:
+    redis_service:
+        type: "redis:7.0"
+    postgres:
+        type: "postgresql:16"
 # ######################################################################################################################
 # #add_service_end
     
